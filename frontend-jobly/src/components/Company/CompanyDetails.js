@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Jobs from "../Jobs/Jobs";
 import { useCompanyFetching } from "../../hooks/useDataFetching";
+import officeImage from "../../assets/office.png";
 
 const CompanyDetails = () => {
   const { handle } = useParams();
@@ -20,6 +21,12 @@ const CompanyDetails = () => {
           </p>
         </div>
       </div>
+
+      <img
+        src={officeImage}
+        alt="office"
+        className="fixed top-10 w-full h-full object-cover -z-20 opacity-40"
+      />
 
       <div className="mt-[350px] sm:mt-[300px] flex flex-row flex-wrap justify-center">
         {company.jobs &&

@@ -16,20 +16,22 @@ export const useCompaniesFetching = () => {
   return companies;
 };
 
-export const useFilterFetching = (formData, submitted, setSubmitted) => {
+export const useFilterFetching = (formProps, submitted, setSubmitted) => {
   const [filter, setFilter] = useState(null);
 
   useEffect(() => {
     const fetchFilteredCompanies = async () => {
-      if (formData && submitted) {
-        const filteredCompanies = await JoblyApi.filterCompanies(formData);
+      if (formProps.formData && submitted) {
+        const filteredCompanies = await JoblyApi.filterCompanies(
+          formProps.formData
+        );
         setFilter(filteredCompanies);
         setSubmitted(false);
       }
     };
 
     fetchFilteredCompanies();
-  }, [formData, submitted, setSubmitted]);
+  }, [formProps.formData, submitted, setSubmitted]);
 
   return filter;
 };
@@ -69,19 +71,63 @@ export const useJobsFetching = () => {
   return jobs;
 };
 
-export const useJobsFiltering = (formData, submitted, setSubmitted) => {
+export const useJobsFiltering = (formProps, submitted, setSubmitted) => {
   const [filter, setFilter] = useState(null);
 
   useEffect(() => {
     const fetchJobs = async () => {
-      if (formData && submitted) {
-        const filteredJobs = await JoblyApi.filterJobs(formData);
+      if (formProps.formData && submitted) {
+        const filteredJobs = await JoblyApi.filterJobs(formProps.formData);
         setFilter(filteredJobs);
         setSubmitted(false);
       }
     };
 
     fetchJobs();
-  }, [formData, submitted, setSubmitted]);
+  }, [formProps.formData, submitted, setSubmitted]);
   return filter;
+};
+
+export const useRegisterUser = (regFormProps, submitted, setSubmitted) => {
+  const [currUser, setCurrUser] = useState();
+
+  useEffect(() => {
+    const getCurrUser = async () => {
+      if (regFormProps.regData && submitted) {
+        try {
+          const token = await JoblyApi.registerUser(regFormProps.regData);
+          setCurrUser(token);
+          setSubmitted(false);
+        } catch (error) {
+          console.error("Error registering user:", error);
+        }
+      }
+    };
+
+    getCurrUser();
+  }, [regFormProps.regData, submitted, setSubmitted]);
+
+  return currUser;
+};
+
+export const useLoginUser = (loginFormProps, submitted, setSubmitted) => {
+  const [currUser, setCurrUser] = useState();
+
+  useEffect(() => {
+    const getCurrUser = async () => {
+      if (loginFormProps.loginData && submitted) {
+        try {
+          const token = await JoblyApi.loginUser(loginFormProps.loginData);
+          setCurrUser(token);
+          setSubmitted(false);
+        } catch (error) {
+          console.error("Error logging in:", error);
+        }
+      }
+    };
+
+    getCurrUser();
+  }, [loginFormProps.loginData, submitted, setSubmitted]);
+
+  return currUser;
 };

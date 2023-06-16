@@ -85,6 +85,30 @@ class JoblyApi {
     const res = await this.request(endpoint);
     return res.jobs;
   }
+
+  //  user must include { username, password, firstName, lastName, email }
+  static async registerUser(regData) {
+    const endpoint = "auth/register";
+    const data = {
+      username: regData.username,
+      password: regData.password,
+      firstName: regData.first,
+      lastName: regData.last,
+      email: regData.email,
+    };
+    const res = await this.request(endpoint, data, "post");
+    return res.token;
+  }
+
+  static async loginUser(loginData) {
+    const endpoint = "auth/token";
+    const data = {
+      username: loginData.username,
+      password: loginData.password,
+    };
+    const res = await this.request(endpoint, data, "post");
+    return res.token;
+  }
 }
 
 export default JoblyApi;

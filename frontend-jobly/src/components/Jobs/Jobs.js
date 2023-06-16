@@ -1,6 +1,6 @@
 const Jobs = ({ company, title, salary, equity }) => {
   return (
-    <div className="flex bg-sky-50 min-w-[24rem] w-[30rem] h-fit rounded-lg relative shadow-lg p-4 justify-between m-4">
+    <div className="flex bg-sky-50 min-w-[24rem] w-[30rem] h-fit relative shadow-lg p-4 justify-between m-4 border-2 border-sky-800 rounded-lg">
       <div className={`flex-col p-4 -mt-2`}>
         {company && <small className="text-xs">Company: {company}</small>}
         <h2 className="text-l font-bold mb-2 mt-2">{title}</h2>

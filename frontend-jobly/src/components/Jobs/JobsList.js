@@ -2,43 +2,17 @@ import { useJobsFetching } from "../../hooks/useDataFetching";
 import Jobs from "./Jobs";
 import { FilterForm } from "../FilterForm";
 import { useState } from "react";
-import useForm from "../../hooks/useForm";
+import { useForm } from "../../hooks/useForm";
 import { useJobsFiltering } from "../../hooks/useDataFetching";
+import officeImage from "../../assets/office.png";
+import { INITIAL_STATE, formInputs } from "./JobsFormData";
 
 const JobsList = () => {
-  const INITIAL_STATE = {
-    title: "",
-    min: "",
-    equity: "",
-  };
-
   const [submitted, setSubmitted] = useState(false);
-  const { formData, handleChange, handleSubmit } = useForm(
-    INITIAL_STATE,
-    setSubmitted
-  );
+  const formProps = useForm(INITIAL_STATE, setSubmitted);
   const jobs = useJobsFetching();
-  const filter = useJobsFiltering(formData, submitted, setSubmitted);
+  const filter = useJobsFiltering(formProps, submitted, setSubmitted);
   let data = filter ? filter : jobs;
-
-  const formInputs = [
-    {
-      name: "title",
-      type: "text",
-      placeholder: "Title",
-      border: "rounded-l-full",
-    },
-    {
-      name: "min",
-      type: "text",
-      placeholder: "Min Salary",
-    },
-    {
-      name: "equity",
-      type: "text",
-      options: [{ Equity: "" }, { Yes: "true" }, { No: "false" }],
-    },
-  ];
 
   return (
     <div>
@@ -53,17 +27,16 @@ const JobsList = () => {
             </p>
 
             <div className="flex justify-center">
-              <FilterForm
-                formInputs={formInputs}
-                formData={formData}
-                handleChange={handleChange}
-                handleSubmit={handleSubmit}
-              />
+              <FilterForm formInputs={formInputs} {...formProps} />
             </div>
           </div>
         </div>
       </div>
-
+      <img
+        src={officeImage}
+        alt="office"
+        className="fixed top-10 w-full h-full object-cover -z-20 opacity-40"
+      />
       <div className="mt-[350px] sm:mt-[300px] flex flex-row flex-wrap justify-center">
         {data &&
           data.map((job) => (
