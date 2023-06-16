@@ -15,7 +15,7 @@ class JoblyApi {
   static token;
 
   static async request(endpoint, data = {}, method = "get") {
-    console.debug("API Call:", endpoint, data, method);
+    // console.debug("API Call:", endpoint, data, method);
 
     //there are multiple ways to pass an authorization token, this is how you pass it in the header.
     //this has been provided to show you another way to pass the token. you are only expected to read this code for this project.
@@ -37,16 +37,54 @@ class JoblyApi {
   /** Get details on a company by handle. */
 
   static async getCompany(handle) {
-    let res = await this.request(`companies/${handle}`);
+    const res = await this.request(`companies/${handle}`);
     return res.company;
   }
 
   static async getCompanies() {
-    let res = await this.request(`companies`);
+    const res = await this.request(`companies`);
     return res.companies;
   }
 
-  // obviously, you'll add a lot here ...
+  static async filterCompanies(formData) {
+    let endpoint = "companies";
+    const queryParams = [];
+
+    if (formData.name !== "") queryParams.push(`name=${formData.name}`);
+
+    if (formData.min !== "") queryParams.push(`minEmployees=${formData.min}`);
+
+    if (formData.max !== "") queryParams.push(`maxEmployees=${formData.max}`);
+
+    if (queryParams.length > 0)
+      endpoint = `${endpoint}?${queryParams.join("&")}`;
+
+    const res = await this.request(endpoint);
+    return res.companies;
+  }
+
+  static async getJobs() {
+    const res = await this.request(`jobs`);
+    return res.jobs;
+  }
+
+  static async filterJobs(formData) {
+    let endpoint = "jobs";
+    const queryParams = [];
+
+    if (formData.title !== "") queryParams.push(`title=${formData.title}`);
+
+    if (formData.min !== "") queryParams.push(`minSalary=${formData.min}`);
+
+    if (formData.equity !== "")
+      queryParams.push(`hasEquity=${formData.equity}`);
+
+    if (queryParams.length > 0)
+      endpoint = `${endpoint}?${queryParams.join("&")}`;
+
+    const res = await this.request(endpoint);
+    return res.jobs;
+  }
 }
 
 export default JoblyApi;

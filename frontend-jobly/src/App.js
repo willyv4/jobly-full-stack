@@ -2,6 +2,8 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import CompanyList from "./components/Company/CompanyList";
 import CompanyDetails from "./components/Company/CompanyDetails";
+import JobsList from "./components/Jobs/JobsList";
+import Home from "./components/Home";
 
 function App() {
   return (
@@ -9,10 +11,10 @@ function App() {
       <NavBar />
       <main>
         <Routes>
-          <Route path="/" element={"HOME"} />
+          <Route path="/" element={<Home />} />
           <Route path="/companies" element={<CompanyList />} />
           <Route path="/companies/:handle" element={<CompanyDetails />} />
-          <Route path="/jobs" element={true} />
+          <Route path="/jobs" element={<JobsList />} />
           <Route path="/login" element={true} />
           <Route path="/signup" element={true} />
           <Route path="/profile" element={true} />

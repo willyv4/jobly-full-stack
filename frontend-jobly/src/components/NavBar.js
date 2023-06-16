@@ -31,7 +31,7 @@ function NavBar() {
           <NavLink
             to={link.to}
             key={index}
-            className="ml-2 text-xs sm:text-sm font-medium text-zinc-200 hover:text-zinc-300 bg-sky-950 p-2 px-2  
+            className="ml-1 text-xs sm:text-sm font-medium text-zinc-200 hover:text-zinc-300 bg-sky-950 p-2 px-2  
 			sm:px-4 rounded-full"
           >
             {link.text}
@@ -39,7 +39,7 @@ function NavBar() {
         ))}
         <NavLink
           to="/login"
-          className="ml-2 text-xs sm:text-sm font-medium text-zinc-200 hover:text-zinc-300 bg-sky-950 p-2 px-2  
+          className="ml-1 text-xs sm:text-sm font-medium text-zinc-200 hover:text-zinc-300 bg-sky-950 p-2 px-2  
 			sm:px-4 rounded-full"
         >
           Login

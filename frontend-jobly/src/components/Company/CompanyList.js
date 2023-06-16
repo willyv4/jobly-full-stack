@@ -1,45 +1,73 @@
-import { useEffect, useState } from "react";
-import JoblyApi from "../../api";
+import { useState } from "react";
 import CompanyCard from "./CompanyCard";
 import { NavLink } from "react-router-dom";
+import useForm from "../../hooks/useForm";
+import { FilterForm } from "../FilterForm";
+import {
+  useFilterFetching,
+  useCompaniesFetching,
+} from "../../hooks/useDataFetching";
 
 const CompanyList = () => {
-  const [companies, setCompanies] = useState([]);
+  const INITIAL_STATE = {
+    name: "",
+    min: "",
+    max: "",
+  };
 
-  useEffect(() => {
-    const getData = async () => {
-      const companies = await JoblyApi.getCompanies();
-      setCompanies(companies);
-    };
+  const [submitted, setSubmitted] = useState(false);
+  const { formData, handleChange, handleSubmit } = useForm(
+    INITIAL_STATE,
+    setSubmitted
+  );
+  const companies = useCompaniesFetching();
+  const filter = useFilterFetching(formData, submitted, setSubmitted);
+  let data = filter ? filter : companies;
 
-    getData();
-  }, []);
+  const formInputs = [
+    {
+      name: "name",
+      type: "text",
+      placeholder: "Company",
+      border: "rounded-l-full",
+    },
+    {
+      name: "min",
+      type: "number",
+      placeholder: "Min Size",
+    },
+    {
+      name: "max",
+      type: "number",
+      placeholder: "Max Size",
+    },
+  ];
 
   return (
     <div className="mt-28">
-      <form className="flex items-center justify-center">
-        <input
-          className="px-4 py-2 border border-gray-300 rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500"
-          type="text"
-          placeholder="Search"
+      <div className="fixed flex justify-center items-center bg-sky-950 p-6 w-full z-10 top-20 -mt-2">
+        <FilterForm
+          formInputs={formInputs}
+          formData={formData}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
         />
-        <button className="px-4 py-2 bg-orange-200 text-sky-950 font-bold rounded-r hover:bg-orange-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          Search
-        </button>
-      </form>
-      <div className=" flex flex-row flex-wrap justify-center">
-        {companies.map((c) => (
-          <>
-            <NavLink key={`${c.handle}-link`} to={`${c.handle}`}>
-              <CompanyCard
-                key={c.handle}
-                description={c.description}
-                name={c.name}
-                numEmployees={c.numEmployees}
-              />
-            </NavLink>
-          </>
-        ))}
+      </div>
+
+      <div className="flex flex-row flex-wrap justify-center mt-40">
+        {data &&
+          data.map((c) => (
+            <>
+              <NavLink key={`${c.handle}-link`} to={`${c.handle}`}>
+                <CompanyCard
+                  key={c.handle}
+                  description={c.description}
+                  name={c.name}
+                  numEmployees={c.numEmployees}
+                />
+              </NavLink>
+            </>
+          ))}
       </div>
     </div>
   );

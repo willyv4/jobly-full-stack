@@ -1,25 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import JoblyApi from "../../api";
-import CompanyJobs from "./CompanyJobs";
+import Jobs from "../Jobs/Jobs";
+import { useCompanyFetching } from "../../hooks/useDataFetching";
 
 const CompanyDetails = () => {
-  const [company, setCompany] = useState([]);
   const { handle } = useParams();
   const navigate = useNavigate();
+  const company = useCompanyFetching(handle);
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const company = await JoblyApi.getCompany(handle);
-        setCompany(company);
-      } catch (e) {
-        return navigate(`/`);
-      }
-    };
-
-    getData();
-  }, [handle, navigate]);
+  if (!company) return navigate("/");
 
   return (
     <div className="mt-20">
@@ -36,7 +24,7 @@ const CompanyDetails = () => {
       <div className="mt-[350px] sm:mt-[300px] flex flex-row flex-wrap justify-center">
         {company.jobs &&
           company.jobs.map((job) => (
-            <CompanyJobs
+            <Jobs
               key={job.id}
               title={job.title}
               salary={job.salary}
