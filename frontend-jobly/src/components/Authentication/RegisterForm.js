@@ -2,18 +2,17 @@ import React from "react";
 import officeImage from "../../assets/office.png";
 
 const RegisterForm = ({
-  accountInputs,
+  regInputs,
   regData,
   handleRegChange,
   handleRegSubmit,
 }) => {
-  console.log("REGISTER FORM COMPONENT", regData);
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="bg-white p-4 rounded-lg shadow-lg  border-2 border-sky-800">
         <form onSubmit={handleRegSubmit}>
           <div className="flex flex-col space-y-4 w-80 p-4">
-            {accountInputs.map((input) => (
+            {regInputs.map((input) => (
               <input
                 key={input.id}
                 className="p-2 rounded-full shadow-inner focus:outline-sky-800 text-sm"
