@@ -1,17 +1,31 @@
 import React from "react";
 import officeImage from "../../assets/office.png";
+import { useContext, useEffect } from "react";
+import CurrUserContext from "./CurrUserContext";
+import { useNavigate } from "react-router-dom";
+import ErrorMsg from "./ErrorMessage";
 
 const LoginForm = ({
   formInputs,
   loginData,
   handleLoginChange,
   handleLoginSubmit,
+  errMsg,
 }) => {
+  const navigate = useNavigate();
+  const CURR_USER = useContext(CurrUserContext);
+
+  useEffect(() => {
+    if (CURR_USER) {
+      navigate("/");
+    }
+  }, [CURR_USER, navigate]);
+
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="bg-white p-4 rounded-lg shadow-lg  border-2 border-sky-800">
         <form onSubmit={handleLoginSubmit}>
-          <div className="flex flex-col space-y-4 w-80 p-4">
+          <div className="flex flex-col space-y-4 w-80 p-4 ">
             {formInputs.map((input) => (
               <input
                 key={input.id}
@@ -35,8 +49,9 @@ const LoginForm = ({
       <img
         src={officeImage}
         alt="office"
-        className="fixed top-10 w-full h-full object-cover -z-20 opacity-40"
+        className="fixed top-10 w-full h-full object-cover -z-20 opacity-70"
       />
+      <ErrorMsg message={errMsg} />
     </div>
   );
 };

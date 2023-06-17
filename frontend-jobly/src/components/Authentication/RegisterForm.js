@@ -1,5 +1,8 @@
 import React from "react";
 import officeImage from "../../assets/office.png";
+import { useNavigate } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import CurrUserContext from "./CurrUserContext";
 
 const RegisterForm = ({
   regInputs,
@@ -7,6 +10,15 @@ const RegisterForm = ({
   handleRegChange,
   handleRegSubmit,
 }) => {
+  const navigate = useNavigate();
+  const CURR_USER = useContext(CurrUserContext);
+
+  useEffect(() => {
+    if (CURR_USER) {
+      navigate("/");
+    }
+  }, [CURR_USER, navigate]);
+
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="bg-white p-4 rounded-lg shadow-lg  border-2 border-sky-800">

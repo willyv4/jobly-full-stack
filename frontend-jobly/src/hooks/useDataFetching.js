@@ -1,4 +1,8 @@
 import { useState, useEffect } from "react";
+import {
+  LOGIN_STATE,
+  REGISTER_STATE,
+} from "../components/Authentication/AuthFormData";
 import JoblyApi from "../API/api";
 
 export const useCompaniesFetching = () => {
@@ -88,46 +92,68 @@ export const useJobsFiltering = (formProps, submitted, setSubmitted) => {
   return filter;
 };
 
-export const useRegisterUser = (regFormProps, submitted, setSubmitted) => {
-  const [currUser, setCurrUser] = useState();
+export const useAuthUser = (
+  regProps,
+  logProps,
+  registered,
+  setRegistered,
+  lgdIn,
+  setLgdIn
+) => {
+  const [currUser, setCurrUser] = useState(null);
+  const [errMsg, setErrMsg] = useState(null);
 
   useEffect(() => {
-    const getCurrUser = async () => {
-      if (regFormProps.regData && submitted) {
+    //
+    // REGISTER USER
+    const registerUser = async () => {
+      if (regProps.regData && registered) {
         try {
-          const token = await JoblyApi.registerUser(regFormProps.regData);
-          setCurrUser(token);
-          setSubmitted(false);
+          const token = await JoblyApi.registerUser(regProps.regData);
+          const user = { token: token, user: regProps.regData.username };
+          localStorage.setItem("CURR_USER", JSON.stringify(user));
+          setCurrUser(user);
+          setRegistered(false);
+          regProps.setRegData(REGISTER_STATE);
         } catch (error) {
-          console.error("Error registering user:", error);
+          setErrMsg(error[0]);
+          setRegistered(false);
+          regProps.setRegData(REGISTER_STATE);
         }
       }
     };
 
-    getCurrUser();
-  }, [regFormProps.regData, submitted, setSubmitted]);
-
-  return currUser;
-};
-
-export const useLoginUser = (loginFormProps, submitted, setSubmitted) => {
-  const [currUser, setCurrUser] = useState();
-
-  useEffect(() => {
-    const getCurrUser = async () => {
-      if (loginFormProps.loginData && submitted) {
+    //
+    // LOGIN USER
+    const loginUser = async () => {
+      if (logProps.loginData && lgdIn) {
         try {
-          const token = await JoblyApi.loginUser(loginFormProps.loginData);
-          setCurrUser(token);
-          setSubmitted(false);
+          const token = await JoblyApi.loginUser(logProps.loginData);
+          const user = { token: token, user: logProps.loginData.username };
+          localStorage.setItem("CURR_USER", JSON.stringify(user));
+          setCurrUser(user);
+          setLgdIn(false);
+          logProps.setLoginData(LOGIN_STATE);
         } catch (error) {
-          console.error("Error logging in:", error);
+          setErrMsg(error[0]);
+          setLgdIn(false);
+          logProps.setLoginData(LOGIN_STATE);
         }
       }
     };
 
-    getCurrUser();
-  }, [loginFormProps.loginData, submitted, setSubmitted]);
+    registerUser();
+    loginUser();
+  }, [regProps, logProps, registered, setRegistered, lgdIn, setLgdIn]);
 
-  return currUser;
+  //
+  // LOGOUT USER
+  const logoutUser = () => {
+    setCurrUser(null);
+    setLgdIn(false);
+    setRegistered(false);
+    localStorage.removeItem("CURR_USER");
+  };
+
+  return { currUser, logoutUser, errMsg };
 };

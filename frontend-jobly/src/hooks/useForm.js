@@ -19,7 +19,7 @@ export const useForm = (initialState, setSubmitted) => {
   return { formData, handleChange, handleSubmit };
 };
 
-export const useRegisterForm = (REGISTER_STATE, setSubmitted) => {
+export const useRegisterForm = (REGISTER_STATE, setRegistered, registered) => {
   const [regData, setRegData] = useState(REGISTER_STATE);
 
   const handleRegChange = (e) => {
@@ -32,13 +32,13 @@ export const useRegisterForm = (REGISTER_STATE, setSubmitted) => {
 
   const handleRegSubmit = (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setRegistered(true);
   };
 
-  return { regData, handleRegChange, handleRegSubmit };
+  return { regData, handleRegChange, handleRegSubmit, setRegData };
 };
 
-export const useLoginForm = (LOGIN_STATE, setSubmitted) => {
+export const useLoginForm = (LOGIN_STATE, setLgdIn) => {
   const [loginData, setLoginData] = useState(LOGIN_STATE);
 
   const handleLoginChange = (e) => {
@@ -51,8 +51,8 @@ export const useLoginForm = (LOGIN_STATE, setSubmitted) => {
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLgdIn(true);
   };
 
-  return { loginData, handleLoginChange, handleLoginSubmit };
+  return { loginData, handleLoginChange, handleLoginSubmit, setLoginData };
 };

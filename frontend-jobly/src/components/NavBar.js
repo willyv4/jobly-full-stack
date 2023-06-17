@@ -1,7 +1,10 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import CurrUserContext from "./Authentication/CurrUserContext";
 
 function NavBar() {
+  const CURR_USER = useContext(CurrUserContext);
+
   const navLinks = [
     {
       to: "/companies",
@@ -27,23 +30,46 @@ function NavBar() {
       </NavLink>
 
       <div>
-        {navLinks.map((link, index) => (
+        {CURR_USER &&
+          navLinks.map((link, index) => (
+            <NavLink
+              to={link.to}
+              key={index}
+              className="ml-1 text-xs sm:text-sm font-medium text-zinc-200 hover:text-zinc-300 bg-sky-950 p-2 px-2  
+			sm:px-4 rounded-full"
+            >
+              {link.text}
+            </NavLink>
+          ))}
+        {!CURR_USER ? (
+          <>
+            <NavLink
+              to="/login"
+              className="ml-1 text-xs sm:text-sm font-medium text-zinc-200 hover:text-zinc-300 bg-sky-950 p-2 px-2  
+			sm:px-4 rounded-full"
+            >
+              Login
+            </NavLink>
+            <NavLink
+              to="/create-account"
+              className="ml-1 text-xs sm:text-sm font-medium text-zinc-200 hover:text-zinc-300 bg-sky-950 p-2 px-2  
+			sm:px-4 rounded-full"
+            >
+              Create Account
+            </NavLink>
+          </>
+        ) : (
           <NavLink
-            to={link.to}
-            key={index}
+            to="/logout"
             className="ml-1 text-xs sm:text-sm font-medium text-zinc-200 hover:text-zinc-300 bg-sky-950 p-2 px-2  
 			sm:px-4 rounded-full"
           >
-            {link.text}
+            logout
+            <small className="absolute bg-orange-200 px-2 right-2 rounded-full top-2 text-[9px] text-sky-950">
+              {CURR_USER.user}
+            </small>
           </NavLink>
-        ))}
-        <NavLink
-          to="/login"
-          className="ml-1 text-xs sm:text-sm font-medium text-zinc-200 hover:text-zinc-300 bg-sky-950 p-2 px-2  
-			sm:px-4 rounded-full"
-        >
-          Login
-        </NavLink>
+        )}
       </div>
     </div>
   );

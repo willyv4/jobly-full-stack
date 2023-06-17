@@ -2,11 +2,20 @@ import { useNavigate, useParams } from "react-router-dom";
 import Jobs from "../Jobs/Jobs";
 import { useCompanyFetching } from "../../hooks/useDataFetching";
 import officeImage from "../../assets/office.png";
+import { useEffect, useContext } from "react";
+import CurrUserContext from "../Authentication/CurrUserContext";
 
 const CompanyDetails = () => {
   const { handle } = useParams();
   const navigate = useNavigate();
   const company = useCompanyFetching(handle);
+  const CURR_USER = useContext(CurrUserContext);
+
+  useEffect(() => {
+    if (!CURR_USER) {
+      navigate("/");
+    }
+  }, [CURR_USER, navigate]);
 
   if (!company) return navigate("/");
 

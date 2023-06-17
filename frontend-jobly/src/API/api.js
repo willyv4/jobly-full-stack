@@ -86,7 +86,6 @@ class JoblyApi {
     return res.jobs;
   }
 
-  //  user must include { username, password, firstName, lastName, email }
   static async registerUser(regData) {
     const endpoint = "auth/register";
     const data = {

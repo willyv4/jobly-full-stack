@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import CompanyCard from "./CompanyCard";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
 import { FilterForm } from "../FilterForm";
 import {
@@ -9,6 +9,7 @@ import {
 } from "../../hooks/useDataFetching";
 import officeImage from "../../assets/office.png";
 import { INITIAL_STATE, formInputs } from "./CompanyFormData";
+import CurrUserContext from "../Authentication/CurrUserContext";
 
 const CompanyList = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -20,6 +21,15 @@ const CompanyList = () => {
     setSubmitted
   );
   let data = filteredCompanies ? filteredCompanies : companies;
+
+  const navigate = useNavigate();
+  const CURR_USER = useContext(CurrUserContext);
+
+  useEffect(() => {
+    if (!CURR_USER) {
+      navigate("/");
+    }
+  }, [CURR_USER, navigate]);
 
   return (
     <div className="mt-28">
