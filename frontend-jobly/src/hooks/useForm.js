@@ -1,4 +1,8 @@
 import { useState } from "react";
+import {
+  REGISTER_STATE,
+  LOGIN_STATE,
+} from "../components/Authentication/AuthFormData";
 
 export const useForm = (initialState, setSubmitted) => {
   const [formData, setFormData] = useState(initialState);
@@ -19,8 +23,10 @@ export const useForm = (initialState, setSubmitted) => {
   return { formData, handleChange, handleSubmit };
 };
 
-export const useRegisterForm = (REGISTER_STATE, setRegistered, registered) => {
+export const useSignupForm = (setCalledSignup) => {
   const [regData, setRegData] = useState(REGISTER_STATE);
+
+  console.log(regData);
 
   const handleRegChange = (e) => {
     const { name, value } = e.target;
@@ -32,13 +38,18 @@ export const useRegisterForm = (REGISTER_STATE, setRegistered, registered) => {
 
   const handleRegSubmit = (e) => {
     e.preventDefault();
-    setRegistered(true);
+    setCalledSignup(true);
   };
 
-  return { regData, handleRegChange, handleRegSubmit, setRegData };
+  return {
+    regData,
+    setRegData,
+    handleRegChange,
+    handleRegSubmit,
+  };
 };
 
-export const useLoginForm = (LOGIN_STATE, setLgdIn) => {
+export const useLoginForm = (setCalledLogin) => {
   const [loginData, setLoginData] = useState(LOGIN_STATE);
 
   const handleLoginChange = (e) => {
@@ -51,8 +62,32 @@ export const useLoginForm = (LOGIN_STATE, setLgdIn) => {
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-    setLgdIn(true);
+    setCalledLogin(true);
   };
 
-  return { loginData, handleLoginChange, handleLoginSubmit, setLoginData };
+  return { loginData, setLoginData, handleLoginChange, handleLoginSubmit };
 };
+
+// export const useProfileForm = (userInfo, setUpdate) => {
+//   const PROFILE_STATE = {
+//     firstName: "",
+//     lastName: userInfo?.lastName,
+//     email: userInfo?.email,
+//   };
+//   const [profData, setProfData] = useState(PROFILE_STATE);
+
+//   const handleProfileChange = (e) => {
+//     const { name, value } = e.target;
+//     setProfData((prevProfData) => ({
+//       ...prevProfData,
+//       [name]: value,
+//     }));
+//   };
+
+//   const handleProfileSubmit = (e) => {
+//     e.preventDefault();
+//     setUpdate(true);
+//   };
+
+//   return { profData, handleProfileChange, handleProfileSubmit, PROFILE_STATE };
+// };

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import {
-  LOGIN_STATE,
-  REGISTER_STATE,
-} from "../components/Authentication/AuthFormData";
 import JoblyApi from "../API/api";
+import {
+  REGISTER_STATE,
+  LOGIN_STATE,
+} from "../components/Authentication/AuthFormData";
 
 export const useCompaniesFetching = () => {
   const [companies, setCompanies] = useState(null);
@@ -92,68 +92,102 @@ export const useJobsFiltering = (formProps, submitted, setSubmitted) => {
   return filter;
 };
 
-export const useAuthUser = (
-  regProps,
-  logProps,
-  registered,
-  setRegistered,
-  lgdIn,
-  setLgdIn
+export const useSignup = (
+  sData,
+  setSData,
+  setToken,
+  calledSignup,
+  setCalledSignup
 ) => {
-  const [currUser, setCurrUser] = useState(null);
-  const [errMsg, setErrMsg] = useState(null);
+  const [err, setErr] = useState();
 
   useEffect(() => {
-    //
-    // REGISTER USER
-    const registerUser = async () => {
-      if (regProps.regData && registered) {
-        try {
-          const token = await JoblyApi.registerUser(regProps.regData);
-          const user = { token: token, user: regProps.regData.username };
-          localStorage.setItem("CURR_USER", JSON.stringify(user));
-          setCurrUser(user);
-          setRegistered(false);
-          regProps.setRegData(REGISTER_STATE);
-        } catch (error) {
-          setErrMsg(error[0]);
-          setRegistered(false);
-          regProps.setRegData(REGISTER_STATE);
-        }
+    async function signup() {
+      try {
+        const token = await JoblyApi.signup(sData);
+        setToken(token);
+        setCalledSignup(false);
+        setSData(REGISTER_STATE);
+      } catch (error) {
+        console.log(error);
+        setErr(error);
+        setCalledSignup(false);
+        setSData(REGISTER_STATE);
       }
-    };
+    }
 
-    //
-    // LOGIN USER
-    const loginUser = async () => {
-      if (logProps.loginData && lgdIn) {
-        try {
-          const token = await JoblyApi.loginUser(logProps.loginData);
-          const user = { token: token, user: logProps.loginData.username };
-          localStorage.setItem("CURR_USER", JSON.stringify(user));
-          setCurrUser(user);
-          setLgdIn(false);
-          logProps.setLoginData(LOGIN_STATE);
-        } catch (error) {
-          setErrMsg(error[0]);
-          setLgdIn(false);
-          logProps.setLoginData(LOGIN_STATE);
-        }
+    if (calledSignup) signup();
+  }, [sData, setSData, setToken, calledSignup, setCalledSignup]);
+
+  return [err];
+};
+
+export const useLogin = (
+  lData,
+  setLData,
+  setToken,
+  calledLogin,
+  setCalledLogin
+) => {
+  const [err, setErr] = useState();
+
+  useEffect(() => {
+    async function login() {
+      try {
+        const token = await JoblyApi.login(lData);
+        setToken(token);
+        setCalledLogin(false);
+        setLData(LOGIN_STATE);
+      } catch (error) {
+        console.log(error);
+        setErr(error);
+        setCalledLogin(false);
+        setLData(LOGIN_STATE);
       }
-    };
+    }
 
-    registerUser();
-    loginUser();
-  }, [regProps, logProps, registered, setRegistered, lgdIn, setLgdIn]);
+    if (calledLogin) {
+      login();
+    }
+  }, [calledLogin, lData, setLData, setToken, setCalledLogin]);
 
-  //
-  // LOGOUT USER
-  const logoutUser = () => {
-    setCurrUser(null);
-    setLgdIn(false);
-    setRegistered(false);
-    localStorage.removeItem("CURR_USER");
+  return [err];
+};
+
+export const useGetUserInfo = () => {
+  const [userInfo, setUserInfo] = useState(null);
+  const [submit, setSubmit] = useState(true);
+
+  const fetchData = async () => {
+    const storedData = localStorage.getItem("CURR_USER");
+    const user = JSON.parse(storedData);
+    if (user && user.token) {
+      const res = await JoblyApi.getUserInfo(user.user);
+      setUserInfo(res.user);
+      setSubmit(false);
+    }
   };
 
-  return { currUser, logoutUser, errMsg };
+  if (submit) fetchData();
+
+  return userInfo;
+};
+
+export const useProfUpdate = (profData, submitted, setSubmitted, username) => {
+  const [userUpdates, setUserUpdates] = useState(null);
+
+  useEffect(() => {
+    const getUpdates = async () => {
+      if (submitted) {
+        const companiesData = await JoblyApi.updateUser(profData, username);
+        setUserUpdates(companiesData);
+        setSubmitted(false);
+        setUserUpdates(profData.PROFILE_STATE);
+      }
+    };
+
+    getUpdates();
+  }, [profData, submitted, setSubmitted, username]);
+
+  return userUpdates;
 };

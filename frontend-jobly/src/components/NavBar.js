@@ -51,7 +51,7 @@ function NavBar() {
               Login
             </NavLink>
             <NavLink
-              to="/create-account"
+              to="/signup"
               className="ml-1 text-xs sm:text-sm font-medium text-zinc-200 hover:text-zinc-300 bg-sky-950 p-2 px-2  
 			sm:px-4 rounded-full"
             >

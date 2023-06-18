@@ -1,38 +1,27 @@
-import React from "react";
 import officeImage from "../../assets/office.png";
-import { useNavigate } from "react-router-dom";
-import { useContext, useEffect } from "react";
-import CurrUserContext from "./CurrUserContext";
 
-const RegisterForm = ({
-  regInputs,
-  regData,
-  handleRegChange,
-  handleRegSubmit,
+const UserProf = ({
+  ProfFormInputs,
+  profData,
+  handleProfileChange,
+  handleProfileSubmit,
+  PROFILE_STATE,
 }) => {
-  const navigate = useNavigate();
-  const CURR_USER = useContext(CurrUserContext);
-
-  useEffect(() => {
-    if (CURR_USER) {
-      navigate("/");
-    }
-  }, [CURR_USER, navigate]);
-
+  console.log(PROFILE_STATE);
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="bg-white p-4 rounded-lg shadow-lg  border-2 border-sky-800">
-        <form onSubmit={handleRegSubmit}>
+        <form onSubmit={handleProfileSubmit}>
           <div className="flex flex-col space-y-4 w-80 p-4">
-            {regInputs.map((input) => (
+            {ProfFormInputs.map((input) => (
               <input
                 key={input.id}
                 className="p-2 rounded-full shadow-inner focus:outline-sky-800 text-sm"
                 type={input.type}
                 name={input.name}
-                value={regData[input.name]}
-                placeholder={input.placeholder}
-                onChange={handleRegChange}
+                value={profData[input.name]}
+                placeholder={PROFILE_STATE[input.name]}
+                onChange={handleProfileChange}
               />
             ))}
             <button
@@ -53,4 +42,4 @@ const RegisterForm = ({
   );
 };
 
-export default RegisterForm;
+export default UserProf;

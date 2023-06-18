@@ -6,70 +6,52 @@ import Home from "./components/Home";
 import CompanyList from "./components/Company/CompanyList";
 import CompanyDetails from "./components/Company/CompanyDetails";
 import JobsList from "./components/Jobs/JobsList";
-import RegisterForm from "./components/Authentication/RegisterForm";
+import SignupForm from "./components/Authentication/SignupForm";
 import LoginForm from "./components/Authentication/LoginForm";
-import { useRegisterForm, useLoginForm } from "./hooks/useForm";
-import { useAuthUser } from "./hooks/useDataFetching";
-import LogOut from "./components/Authentication/LogOut";
-import {
-  REGISTER_STATE,
-  LOGIN_STATE,
-  regInputs,
-  LoginInputs,
-} from "./components/Authentication/AuthFormData";
+
+export const TOKEN_STORAGE_ID = "jobly-token";
 
 function App() {
-  const [lgdIn, setLgdIn] = useState(false);
-  const [registered, setRegistered] = useState(false);
-  const regProps = useRegisterForm(REGISTER_STATE, setRegistered, registered);
-  const logProps = useLoginForm(LOGIN_STATE, setLgdIn, lgdIn);
-  const { logoutUser, errMsg } = useAuthUser(
-    regProps,
-    logProps,
-    registered,
-    setRegistered,
-    lgdIn,
-    setLgdIn
-  );
+  const [token, setToken] = useState(TOKEN_STORAGE_ID);
 
-  const storedData = localStorage.getItem("CURR_USER");
-  const CURR_USER = JSON.parse(storedData);
+  console.log(token, "TOKEN");
+
+  // const storedData = localStorage.getItem("CURR_USER");
+  // const CURR_USER = JSON.parse(storedData);
+  // JoblyApi.token = CURR_USER?.token;
+  // const userInfo = useGetUserInfo();
+
+  // const profProps = useProfileForm(userInfo, setUpdate);
+  // const userUpdate = useProfUpdate(profProps, update, setUpdate, CURR_USER);
 
   return (
-    <CurrUserContext.Provider value={CURR_USER}>
-      <BrowserRouter>
-        <NavBar />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/companies" element={<CompanyList />} />
-            <Route path="/companies/:handle" element={<CompanyDetails />} />
-            <Route path="/jobs" element={<JobsList />} />
-            <Route
-              path="/create-account"
-              element={<RegisterForm regInputs={regInputs} {...regProps} />}
-            />
-            <Route
-              path="/login"
-              element={
-                <LoginForm
-                  formInputs={LoginInputs}
-                  {...logProps}
-                  errMsg={errMsg}
-                />
-              }
-            />
-            <Route
+    // <CurrUserContext.Provider value={CURR_USER}>
+    <BrowserRouter>
+      <NavBar />
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/companies" element={<CompanyList />} />
+          <Route path="/companies/:handle" element={<CompanyDetails />} />
+          <Route path="/jobs" element={<JobsList />} />
+          <Route path="/signup" element={<SignupForm setToken={setToken} />} />
+          <Route path="/login" element={<LoginForm setToken={setToken} />} />
+          {/* <Route
               path="/logout"
               element={<LogOut logoutUser={() => logoutUser()} />}
             />
-            <Route path="/profile" element={true} />
-            {/* <Route path="*" element={<Navigate to="/404" replace />} /> */}
-            {/* <Route path="/404" element={<NotFound />} /> */}
-          </Routes>
-        </main>
-      </BrowserRouter>
-    </CurrUserContext.Provider>
+            <Route
+              path="/profile"
+              element={
+                <UserProf ProfFormInputs={ProfFormInputs} {...profProps} />
+              }
+            /> */}
+          {/* <Route path="*" element={<Navigate to="/404" replace />} /> */}
+          {/* <Route path="/404" element={<NotFound />} /> */}
+        </Routes>
+      </main>
+    </BrowserRouter>
+    // </CurrUserContext.Provider>
   );
 }
 

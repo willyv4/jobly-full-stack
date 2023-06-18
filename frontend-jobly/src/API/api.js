@@ -86,8 +86,10 @@ class JoblyApi {
     return res.jobs;
   }
 
-  static async registerUser(regData) {
+  static async signup(regData) {
     const endpoint = "auth/register";
+
+    console.log(regData);
     const data = {
       username: regData.username,
       password: regData.password,
@@ -99,7 +101,7 @@ class JoblyApi {
     return res.token;
   }
 
-  static async loginUser(loginData) {
+  static async login(loginData) {
     const endpoint = "auth/token";
     const data = {
       username: loginData.username,
@@ -107,6 +109,25 @@ class JoblyApi {
     };
     const res = await this.request(endpoint, data, "post");
     return res.token;
+  }
+
+  static async updateUser(profData, username) {
+    const endpoint = `users/${username}`;
+    console.log(profData.first);
+    const data = {
+      firstName: profData.first,
+      lastName: profData.last,
+      password: profData.password,
+      email: profData.email,
+    };
+    const res = await this.request(endpoint, data, "patch");
+    return res.user;
+  }
+
+  static async getUserInfo(username) {
+    const endpoint = `users/${username}`;
+    const res = await this.request(endpoint);
+    return res;
   }
 }
 

@@ -7,7 +7,7 @@ import { useJobsFiltering } from "../../hooks/useDataFetching";
 import officeImage from "../../assets/office.png";
 import { INITIAL_STATE, formInputs } from "./JobsFormData";
 import CurrUserContext from "../Authentication/CurrUserContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const JobsList = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -16,13 +16,14 @@ const JobsList = () => {
   const filter = useJobsFiltering(formProps, submitted, setSubmitted);
   let data = filter ? filter : jobs;
   const navigate = useNavigate();
+  const location = useLocation();
   const CURR_USER = useContext(CurrUserContext);
 
   useEffect(() => {
     if (!CURR_USER) {
       navigate("/");
     }
-  }, [CURR_USER, navigate]);
+  }, [CURR_USER, navigate, location]);
 
   return (
     <div>

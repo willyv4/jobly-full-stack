@@ -6,10 +6,8 @@ const LogOut = ({ logoutUser }) => {
 
   useEffect(() => {
     logoutUser();
-    navigate("/");
+    return navigate("/");
   }, [navigate, logoutUser]);
-
-  return null;
 };
 
 export default LogOut;
