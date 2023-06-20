@@ -1,27 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, Fragment } from "react";
+import { Transition } from "@headlessui/react";
 
-const ErrorMsg = ({ message, duration = 5000 }) => {
-  const [visible, setVisible] = useState(true);
+const Message = ({ message }) => {
+  const [isShowing, setIsShowing] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setVisible(false);
-    }, duration);
+    if (message) {
+      setIsShowing(true);
+    }
+  }, [message]);
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [duration]);
+  if (isShowing) {
+    setTimeout(() => {
+      setIsShowing(false);
+    }, 5000);
+  }
 
   return (
-    <small
-      className={`absolute bg-white rounded-full shadow-lg px-4 top-[10px] z-30 text-xs text-rose-500 transition-opacity ${
-        visible ? "opacity-100 duration-500" : "opacity-0"
-      }`}
-    >
-      {message}
-    </small>
+    <>
+      <Transition
+        as={Fragment}
+        show={isShowing}
+        enter="transition-opacity duration-1000"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-1000"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
+        <p className="absolute left-2 top-20 z-30 rounded-sm bg-white px-6 py-2 text-2xl font-bold text-teal-400">
+          {message}
+        </p>
+      </Transition>
+    </>
   );
 };
 
-export default ErrorMsg;
+export default Message;

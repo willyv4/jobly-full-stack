@@ -1,44 +1,32 @@
-import { useState, useContext, useEffect } from "react";
-import officeImage from "../../assets/office.png";
-import { useNavigate } from "react-router-dom";
-import { useSignupForm } from "../../hooks/useForm";
-import CurrUserContext from "./CurrUserContext";
-import { useSignup } from "../../hooks/useDataFetching";
+import { useState } from "react";
+import { useSignup, useSignupForm } from "../../hooks/useAuth/useSignin";
+import BgImage from "../BgImage";
 import { regInputs } from "./AuthFormData";
+import Message from "./ErrorMessage";
 
-const SignupForm = ({ setToken }) => {
-  const navigate = useNavigate();
-  const CURR_USER = useContext(CurrUserContext);
+const SignupForm = ({ setAuthorized }) => {
   const [calledSignup, setCalledSignup] = useState(false);
-
-  const { regData, setRegData, handleRegChange, handleRegSubmit } =
+  const [regData, setRegData, handleRegChange, handleRegSubmit] =
     useSignupForm(setCalledSignup);
-
-  const [signupErr] = useSignup(
+  const [message] = useSignup(
     regData,
     setRegData,
-    setToken,
+    setAuthorized,
     calledSignup,
     setCalledSignup
   );
 
-  console.log(signupErr);
-
-  useEffect(() => {
-    if (CURR_USER) {
-      navigate("/");
-    }
-  }, [CURR_USER, navigate]);
-
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="bg-white p-4 rounded-lg shadow-lg  border-2 border-sky-800">
+    <div className="flex h-screen items-center justify-center">
+      <BgImage />
+      <Message message={message} />
+      <div className="rounded-md bg-neutral-50  p-4 shadow-lg">
         <form onSubmit={handleRegSubmit}>
-          <div className="flex flex-col space-y-4 w-80 p-4">
+          <div className="flex w-80 flex-col space-y-4 p-4">
             {regInputs.map((input) => (
               <input
                 key={input.id}
-                className="p-2 rounded-full shadow-inner focus:outline-sky-800 text-sm"
+                className="rounded-full p-2 text-sm shadow-inner focus:outline-sky-800"
                 type={input.type}
                 name={input.name}
                 value={regData[input.name]}
@@ -48,18 +36,13 @@ const SignupForm = ({ setToken }) => {
             ))}
             <button
               type="submit"
-              className="mt-auto px-4 py-2 bg-orange-200 text-xs rounded-full text-sky-950 font-bold hover:bg-orange-300 "
+              className="mt-auto rounded-full bg-teal-200 px-4 py-2 text-xs font-bold text-neutral-950 hover:bg-teal-300 "
             >
               Create Account
             </button>
           </div>
         </form>
       </div>
-      <img
-        src={officeImage}
-        alt="office"
-        className="fixed top-10 w-full h-full object-cover -z-20 opacity-40"
-      />
     </div>
   );
 };

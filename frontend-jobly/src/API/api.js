@@ -51,11 +51,8 @@ class JoblyApi {
     const queryParams = [];
 
     if (formData.name !== "") queryParams.push(`name=${formData.name}`);
-
     if (formData.min !== "") queryParams.push(`minEmployees=${formData.min}`);
-
     if (formData.max !== "") queryParams.push(`maxEmployees=${formData.max}`);
-
     if (queryParams.length > 0)
       endpoint = `${endpoint}?${queryParams.join("&")}`;
 
@@ -73,12 +70,9 @@ class JoblyApi {
     const queryParams = [];
 
     if (formData.title !== "") queryParams.push(`title=${formData.title}`);
-
     if (formData.min !== "") queryParams.push(`minSalary=${formData.min}`);
-
     if (formData.equity !== "")
       queryParams.push(`hasEquity=${formData.equity}`);
-
     if (queryParams.length > 0)
       endpoint = `${endpoint}?${queryParams.join("&")}`;
 
@@ -88,38 +82,21 @@ class JoblyApi {
 
   static async signup(regData) {
     const endpoint = "auth/register";
-
-    console.log(regData);
-    const data = {
-      username: regData.username,
-      password: regData.password,
-      firstName: regData.first,
-      lastName: regData.last,
-      email: regData.email,
-    };
+    let data = regData;
     const res = await this.request(endpoint, data, "post");
     return res.token;
   }
 
   static async login(loginData) {
     const endpoint = "auth/token";
-    const data = {
-      username: loginData.username,
-      password: loginData.password,
-    };
+    let data = loginData;
     const res = await this.request(endpoint, data, "post");
     return res.token;
   }
 
   static async updateUser(profData, username) {
     const endpoint = `users/${username}`;
-    console.log(profData.first);
-    const data = {
-      firstName: profData.first,
-      lastName: profData.last,
-      password: profData.password,
-      email: profData.email,
-    };
+    let data = profData;
     const res = await this.request(endpoint, data, "patch");
     return res.user;
   }
@@ -127,7 +104,15 @@ class JoblyApi {
   static async getUserInfo(username) {
     const endpoint = `users/${username}`;
     const res = await this.request(endpoint);
-    return res;
+    return res.user;
+  }
+
+  // "users/:username/jobs/:id"
+  static async applyToJob(username, jobId) {
+    const endpoint = `users/${username}/jobs/${jobId}`;
+    const res = await this.request(endpoint, {}, "post");
+    console.log(res.applied);
+    return res.applied;
   }
 }
 

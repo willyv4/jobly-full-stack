@@ -1,39 +1,29 @@
-import { useJobsFetching } from "../../hooks/useDataFetching";
+import { useJobsFetching } from "../../hooks/useJobs";
 import Jobs from "./Jobs";
 import { FilterForm } from "../FilterForm";
-import { useState, useContext, useEffect } from "react";
-import { useForm } from "../../hooks/useForm";
-import { useJobsFiltering } from "../../hooks/useDataFetching";
+import { useState } from "react";
+import { useJobsFiltering, useFilterForm } from "../../hooks/useJobs";
 import officeImage from "../../assets/office.png";
 import { INITIAL_STATE, formInputs } from "./JobsFormData";
-import CurrUserContext from "../Authentication/CurrUserContext";
-import { useNavigate, useLocation } from "react-router-dom";
+import BgImage from "../BgImage";
 
-const JobsList = () => {
+const JobsList = ({ applyToJob, hasApplied }) => {
   const [submitted, setSubmitted] = useState(false);
-  const formProps = useForm(INITIAL_STATE, setSubmitted);
+  const formProps = useFilterForm(INITIAL_STATE, setSubmitted);
   const jobs = useJobsFetching();
   const filter = useJobsFiltering(formProps, submitted, setSubmitted);
   let data = filter ? filter : jobs;
-  const navigate = useNavigate();
-  const location = useLocation();
-  const CURR_USER = useContext(CurrUserContext);
-
-  useEffect(() => {
-    if (!CURR_USER) {
-      navigate("/");
-    }
-  }, [CURR_USER, navigate, location]);
 
   return (
     <div>
       <div className="mt-20">
-        <div className="fixed w-full z-10 bg-sky-950 py-6 top-[70px]">
-          <div className=" text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-4xl font-bold text-white mb-4">
+        <BgImage />
+        <div className="fixed top-[70px] z-10 w-full bg-neutral-950/60 py-6 backdrop-blur-3xl backdrop-filter">
+          <div className=" mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+            <h1 className="mb-4 text-3xl font-bold text-white">
               Find Your Path to Success
             </h1>
-            <p className="text-xl text-gray-300 mb-6">
+            <p className="mb-6 text-xl text-gray-300">
               Discover Exciting Career Opportunities
             </p>
 
@@ -43,16 +33,14 @@ const JobsList = () => {
           </div>
         </div>
       </div>
-      <img
-        src={officeImage}
-        alt="office"
-        className="fixed top-10 w-full h-full object-cover -z-20 opacity-40"
-      />
-      <div className="mt-[350px] sm:mt-[300px] flex flex-row flex-wrap justify-center">
+      <div className="mt-[350px] flex flex-row flex-wrap justify-center sm:mt-[300px]">
         {data &&
           data.map((job) => (
             <Jobs
               key={job.id}
+              hasApplied={hasApplied}
+              applyToJob={applyToJob}
+              id={job.id}
               company={job.companyName}
               title={job.title}
               salary={job.salary}

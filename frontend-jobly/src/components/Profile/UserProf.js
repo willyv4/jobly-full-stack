@@ -1,43 +1,48 @@
-import officeImage from "../../assets/office.png";
+import { useProfUpdate, useProfileForm } from "../../hooks/useProfile";
+import { ProfFormInputs } from "./FormData";
+import { useState } from "react";
+import BgImage from "../BgImage";
+import Message from "../Authentication/ErrorMessage";
 
-const UserProf = ({
-  ProfFormInputs,
-  profData,
-  handleProfileChange,
-  handleProfileSubmit,
-  PROFILE_STATE,
-}) => {
-  console.log(PROFILE_STATE);
+const UserProf = ({ currUser }) => {
+  const [submitted, setSubmitted] = useState(false);
+
+  const [profData, handleProfileChange, handleProfileSubmit] = useProfileForm(
+    currUser,
+    setSubmitted
+  );
+
+  const [message] = useProfUpdate(profData, submitted, setSubmitted, currUser);
+
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="bg-white p-4 rounded-lg shadow-lg  border-2 border-sky-800">
+    <div className="flex h-screen items-center justify-center">
+      <BgImage />
+      <Message message={message || null} />
+      <div className="rounded-md bg-neutral-50  p-4 ">
         <form onSubmit={handleProfileSubmit}>
-          <div className="flex flex-col space-y-4 w-80 p-4">
+          <p className="text-center text-lg font-bold">
+            Update Your information
+          </p>
+          <div className="flex w-80 flex-col space-y-4 p-4">
             {ProfFormInputs.map((input) => (
               <input
                 key={input.id}
-                className="p-2 rounded-full shadow-inner focus:outline-sky-800 text-sm"
+                className="rounded-full p-2 text-sm shadow-inner focus:outline-teal-300"
                 type={input.type}
                 name={input.name}
                 value={profData[input.name]}
-                placeholder={PROFILE_STATE[input.name]}
                 onChange={handleProfileChange}
               />
             ))}
             <button
               type="submit"
-              className="mt-auto px-4 py-2 bg-orange-200 text-xs rounded-full text-sky-950 font-bold hover:bg-orange-300 "
+              className=" mt-auto rounded-full bg-teal-200 px-4 py-2 text-xs font-bold text-black hover:animate-pulse"
             >
-              Create Account
+              Save Changes
             </button>
           </div>
         </form>
       </div>
-      <img
-        src={officeImage}
-        alt="office"
-        className="fixed top-10 w-full h-full object-cover -z-20 opacity-40"
-      />
     </div>
   );
 };

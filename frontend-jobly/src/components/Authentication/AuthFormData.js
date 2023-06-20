@@ -1,8 +1,8 @@
 export const REGISTER_STATE = {
   username: "",
   password: "",
-  first: "",
-  last: "",
+  firstName: "",
+  lastName: "",
   email: "",
 };
 
@@ -26,13 +26,13 @@ export const regInputs = [
   },
   {
     id: "register-first",
-    name: "first",
+    name: "firstName",
     type: "text",
     placeholder: "First Name",
   },
   {
     id: "register-last",
-    name: "last",
+    name: "lastName",
     type: "text",
     placeholder: "Last Name",
   },

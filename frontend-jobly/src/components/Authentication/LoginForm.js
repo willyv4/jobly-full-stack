@@ -1,45 +1,32 @@
-import React from "react";
-import officeImage from "../../assets/office.png";
-import { useContext, useEffect } from "react";
-import CurrUserContext from "./CurrUserContext";
-import { useNavigate } from "react-router-dom";
-import ErrorMsg from "./ErrorMessage";
-import { useLoginForm } from "../../hooks/useForm";
 import { useState } from "react";
-import { useLogin } from "../../hooks/useDataFetching";
+import { useLogin, useLoginForm } from "../../hooks/useAuth/useLogin";
 import { LoginInputs } from "../Authentication/AuthFormData";
+import BgImage from "../BgImage";
+import Message from "./ErrorMessage";
 
-const LoginForm = ({ setToken }) => {
-  const navigate = useNavigate();
-  const CURR_USER = useContext(CurrUserContext);
-
+const LoginForm = ({ setAuthorized }) => {
   const [calledLogin, setCalledLogin] = useState(false);
-  const { loginData, setLoginData, handleLoginChange, handleLoginSubmit } =
+  const [loginData, setLoginData, handleLoginChange, handleLoginSubmit] =
     useLoginForm(setCalledLogin);
-
-  const [loginErr] = useLogin(
+  const [message] = useLogin(
     loginData,
     setLoginData,
-    setToken,
+    setAuthorized,
     calledLogin,
     setCalledLogin
   );
 
-  useEffect(() => {
-    if (CURR_USER) {
-      navigate("/");
-    }
-  }, [CURR_USER, navigate]);
-
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="bg-white p-4 rounded-lg shadow-lg  border-2 border-sky-800">
+    <div className="flex h-screen items-center justify-center">
+      <BgImage />
+      <Message message={message} />
+      <div className="rounded-md bg-neutral-50  p-4 shadow-lg">
         <form onSubmit={handleLoginSubmit}>
-          <div className="flex flex-col space-y-4 w-80 p-4 ">
+          <div className="flex w-80 flex-col space-y-4 p-4 ">
             {LoginInputs.map((input) => (
               <input
                 key={input.id}
-                className="p-2 rounded-full shadow-inner focus:outline-sky-800 text-sm"
+                className="rounded-full p-2 text-sm shadow-inner focus:outline-sky-800"
                 type={input.type}
                 name={input.name}
                 value={loginData[input.name]}
@@ -49,19 +36,13 @@ const LoginForm = ({ setToken }) => {
             ))}
             <button
               type="submit"
-              className="mt-auto px-4 py-2 bg-orange-200 text-xs rounded-full text-sky-950 font-bold hover:bg-orange-300 "
+              className="mt-auto rounded-full bg-teal-200 px-4 py-2 text-xs font-bold text-neutral-950 hover:bg-teal-300 "
             >
               Login
             </button>
           </div>
         </form>
       </div>
-      <img
-        src={officeImage}
-        alt="office"
-        className="fixed top-10 w-full h-full object-cover -z-20 opacity-70"
-      />
-      <ErrorMsg message={loginErr} />
     </div>
   );
 };

@@ -1,47 +1,45 @@
-import { useState, useContext, useEffect } from "react";
+import { useState } from "react";
 import CompanyCard from "./CompanyCard";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useForm } from "../../hooks/useForm";
+import { NavLink } from "react-router-dom";
+import { useFilterForm } from "../../hooks/useJobs";
 import { FilterForm } from "../FilterForm";
 import {
-  useFilterFetching,
   useCompaniesFetching,
-} from "../../hooks/useDataFetching";
-import officeImage from "../../assets/office.png";
+  useCompanyFiltering,
+} from "../../hooks/useCompanies";
 import { INITIAL_STATE, formInputs } from "./CompanyFormData";
-import CurrUserContext from "../Authentication/CurrUserContext";
+import BgImage from "../BgImage";
 
 const CompanyList = () => {
   const [submitted, setSubmitted] = useState(false);
-  const formProps = useForm(INITIAL_STATE, setSubmitted);
+  const formProps = useFilterForm(INITIAL_STATE, setSubmitted);
   const companies = useCompaniesFetching();
-  const filteredCompanies = useFilterFetching(
+  const filteredCompanies = useCompanyFiltering(
     formProps,
     submitted,
     setSubmitted
   );
+
   let data = filteredCompanies ? filteredCompanies : companies;
 
-  const navigate = useNavigate();
-  const CURR_USER = useContext(CurrUserContext);
-
-  useEffect(() => {
-    if (!CURR_USER) {
-      navigate("/");
-    }
-  }, [CURR_USER, navigate]);
-
   return (
-    <div className="mt-28">
-      <div className="fixed flex justify-center items-center bg-sky-950 p-6 w-full z-10 top-20 -mt-2">
-        <FilterForm formInputs={formInputs} {...formProps} />
+    <div className="mt-72">
+      <BgImage />
+      <div className="fixed top-[70px] z-10 w-full bg-neutral-950/60 py-6 backdrop-blur-3xl backdrop-filter">
+        <div className=" mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          <h1 className="mb-4 text-3xl font-bold text-white">
+            Elevate Your Career & Achieve New Heights
+          </h1>
+          <p className="mb-6 text-xl text-gray-300">
+            Explore Jobs and Take the Next Step
+          </p>
+
+          <div className="flex justify-center">
+            <FilterForm formInputs={formInputs} {...formProps} />
+          </div>
+        </div>
       </div>
-      <img
-        src={officeImage}
-        alt="office"
-        className="fixed top-10 w-full h-full object-cover -z-20 opacity-40"
-      />
-      <div className="flex flex-row flex-wrap justify-center mt-40">
+      <div className="mt-40 flex flex-row flex-wrap justify-center">
         {data &&
           data.map((c) => (
             <div key={`${c.handle}-link`}>

@@ -1,6 +1,5 @@
-import { useState } from "react";
 import CurrUserContext from "./components/Authentication/CurrUserContext";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import CompanyList from "./components/Company/CompanyList";
@@ -8,50 +7,88 @@ import CompanyDetails from "./components/Company/CompanyDetails";
 import JobsList from "./components/Jobs/JobsList";
 import SignupForm from "./components/Authentication/SignupForm";
 import LoginForm from "./components/Authentication/LoginForm";
-
-export const TOKEN_STORAGE_ID = "jobly-token";
+import { useGetCurrUser } from "./hooks/useAuth/useGetUser";
+import useLocalStorage from "./hooks/useAuth/useLocalStorage";
+import LogOut from "./components/Authentication/LogOut";
+import UserProf from "./components/Profile/UserProf";
+import PrivateRoute from "./components/Authentication/PrivateRoute";
+import { useJobApplication } from "./hooks/useApply";
+import Loader from "./components/Loader";
+import NotFound from "./components/NotFound";
 
 function App() {
-  const [token, setToken] = useState(TOKEN_STORAGE_ID);
+  // authorized {token: token, username: username}
+  const [authorized, setAuthorized] = useLocalStorage(undefined);
+  const [applyToJob, hasApplied, setHasApplied] = useJobApplication(authorized);
+  const [currUser, setCurrUser, isLoading] = useGetCurrUser(
+    authorized,
+    setHasApplied
+  );
 
-  console.log(token, "TOKEN");
+  const isAuthed = authorized.token !== null;
 
-  // const storedData = localStorage.getItem("CURR_USER");
-  // const CURR_USER = JSON.parse(storedData);
-  // JoblyApi.token = CURR_USER?.token;
-  // const userInfo = useGetUserInfo();
+  const appContext = {
+    authed: isAuthed,
+    username: authorized.username,
+    userInfo: currUser,
+  };
 
-  // const profProps = useProfileForm(userInfo, setUpdate);
-  // const userUpdate = useProfUpdate(profProps, update, setUpdate, CURR_USER);
+  if (!currUser && isLoading) {
+    return <Loader />;
+  }
 
   return (
-    // <CurrUserContext.Provider value={CURR_USER}>
-    <BrowserRouter>
-      <NavBar />
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/companies" element={<CompanyList />} />
-          <Route path="/companies/:handle" element={<CompanyDetails />} />
-          <Route path="/jobs" element={<JobsList />} />
-          <Route path="/signup" element={<SignupForm setToken={setToken} />} />
-          <Route path="/login" element={<LoginForm setToken={setToken} />} />
-          {/* <Route
-              path="/logout"
-              element={<LogOut logoutUser={() => logoutUser()} />}
+    <CurrUserContext.Provider value={appContext}>
+      <BrowserRouter>
+        <NavBar />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route element={<PrivateRoute />}>
+              <Route path="/companies" element={<CompanyList />} />
+              <Route
+                path="/companies/:handle"
+                element={
+                  <CompanyDetails
+                    applyToJob={applyToJob}
+                    hasApplied={hasApplied}
+                  />
+                }
+              />
+              <Route
+                path="/jobs"
+                element={
+                  <JobsList applyToJob={applyToJob} hasApplied={hasApplied} />
+                }
+              />
+              <Route
+                path="/profile"
+                element={<UserProf currUser={currUser} />}
+              />
+            </Route>
+            <Route
+              path="/signup"
+              element={<SignupForm setAuthorized={setAuthorized} />}
             />
             <Route
-              path="/profile"
+              path="/login"
+              element={<LoginForm setAuthorized={setAuthorized} />}
+            />
+            <Route
+              path="/logout"
               element={
-                <UserProf ProfFormInputs={ProfFormInputs} {...profProps} />
+                <LogOut
+                  setAuthorized={setAuthorized}
+                  setCurrUser={setCurrUser}
+                />
               }
-            /> */}
-          {/* <Route path="*" element={<Navigate to="/404" replace />} /> */}
-          {/* <Route path="/404" element={<NotFound />} /> */}
-        </Routes>
-      </main>
-    </BrowserRouter>
-    // </CurrUserContext.Provider>
+            />
+            <Route path="*" element={<Navigate to="/404" replace />} />
+            <Route path="/404" element={<NotFound />} />
+          </Routes>
+        </main>
+      </BrowserRouter>
+    </CurrUserContext.Provider>
   );
 }
 
