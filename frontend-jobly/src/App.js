@@ -75,8 +75,8 @@ function App() {
               path="/login"
               element={<LoginForm setAuthorized={setAuthorized} />}
             />
-            <Route path="*" element={<Navigate to="/404" replace />} />
-            <Route path="/404" element={<NotFound />} />
+            {/* <Route path="*" element={<Navigate to="/404" replace />} />
+            <Route path="/404" element={<NotFound />} /> */}
           </Routes>
         </main>
       </BrowserRouter>
