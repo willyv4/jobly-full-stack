@@ -34,7 +34,9 @@ const JobsList = ({ applyToJob, hasApplied }) => {
         </div>
       </div>
       {!jobs ? (
-        <Loader />
+        <div className="-mt-20">
+          <Loader />
+        </div>
       ) : (
         <div className="mt-[350px] flex flex-row flex-wrap justify-center sm:mt-[300px]">
           {data &&

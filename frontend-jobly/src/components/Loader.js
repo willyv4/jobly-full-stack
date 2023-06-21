@@ -1,7 +1,7 @@
 const Loader = () => {
   return (
     <>
-      <div className="flex h-screen flex-col items-center justify-center">
+      <div className="mb-10 flex h-full flex-col items-center justify-center">
         <p className="mb-10 text-4xl font-bold text-white">Loading...</p>
         <svg
           className="animate-spin font-bold text-white"
