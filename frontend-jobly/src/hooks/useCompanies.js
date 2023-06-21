@@ -36,7 +36,7 @@ export const useCompanyFiltering = (formProps, submitted, setSubmitted) => {
   return filter;
 };
 
-export const useCompanyFetching = (handle) => {
+export const useCompanyFetching = (handle, submitted, setSubmitted) => {
   const [company, setCompany] = useState(null);
 
   useEffect(() => {
@@ -46,12 +46,12 @@ export const useCompanyFetching = (handle) => {
         setCompany(companyData);
       } catch (e) {
         console.log(e);
-        setCompany(false);
+        setCompany(true);
       }
     };
 
     if (handle) fetchCompany();
-  }, [handle]);
+  }, [handle, submitted, setSubmitted]);
 
   return company;
 };

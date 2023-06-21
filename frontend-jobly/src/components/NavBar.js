@@ -1,9 +1,10 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import CurrUserContext from "./Authentication/CurrUserContext";
 
-function NavBar() {
+function NavBar({ setCurrUser, setAuthorized }) {
   const appContext = useContext(CurrUserContext);
+  const navigate = useNavigate();
 
   const navLinks = [
     {
@@ -19,6 +20,13 @@ function NavBar() {
       text: "Profile",
     },
   ];
+
+  const handleLogout = () => {
+    setCurrUser(null);
+    setAuthorized({ token: null, username: null });
+
+    return navigate("/");
+  };
 
   return (
     <div className="fixed top-0 z-10 flex w-full flex-wrap items-center justify-between bg-neutral-900 p-4 shadow-lg">
@@ -59,16 +67,16 @@ function NavBar() {
             </NavLink>
           </>
         ) : (
-          <NavLink
-            to="/logout"
-            className="ml-1 rounded-full bg-slate-100 p-2 px-2 text-[10px] font-medium text-neutral-800 hover:animate-pulse hover:bg-neutral-400 
+          <button
+            onClick={handleLogout}
+            className="ml-1 rounded-full bg-slate-100 p-[6px] px-2 text-[10px] font-medium text-neutral-800 hover:animate-pulse hover:bg-neutral-400 
 			sm:px-4 sm:text-sm"
           >
             logout
             <small className="absolute right-2 top-2 rounded-full bg-teal-500 px-2 text-[8px] text-black">
               {appContext.username}
             </small>
-          </NavLink>
+          </button>
         )}
       </div>
     </div>

@@ -28,7 +28,7 @@ const Message = ({ message }) => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <p className="absolute left-2 top-20 z-30 rounded-sm bg-white px-6 py-2 text-2xl font-bold text-teal-400">
+        <p className="absolute left-2 top-20 z-30 rounded-sm bg-white px-6 py-2 text-2xl font-bold text-yellow-400">
           {message}
         </p>
       </Transition>

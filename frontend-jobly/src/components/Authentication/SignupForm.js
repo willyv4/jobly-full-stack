@@ -3,6 +3,7 @@ import { useSignup, useSignupForm } from "../../hooks/useAuth/useSignin";
 import BgImage from "../BgImage";
 import { regInputs } from "./AuthFormData";
 import Message from "./ErrorMessage";
+import Processer from "../Processer";
 
 const SignupForm = ({ setAuthorized }) => {
   const [calledSignup, setCalledSignup] = useState(false);
@@ -38,7 +39,7 @@ const SignupForm = ({ setAuthorized }) => {
               type="submit"
               className="mt-auto rounded-full bg-teal-200 px-4 py-2 text-xs font-bold text-neutral-950 hover:bg-teal-300 "
             >
-              Create Account
+              {calledSignup ? <Processer /> : "Sign up"}
             </button>
           </div>
         </form>

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useJobsFiltering, useFilterForm } from "../../hooks/useJobs";
 import { INITIAL_STATE, formInputs } from "./JobsFormData";
 import BgImage from "../BgImage";
+import Loader from "../Loader";
 
 const JobsList = ({ applyToJob, hasApplied }) => {
   const [submitted, setSubmitted] = useState(false);
@@ -32,21 +33,25 @@ const JobsList = ({ applyToJob, hasApplied }) => {
           </div>
         </div>
       </div>
-      <div className="mt-[350px] flex flex-row flex-wrap justify-center sm:mt-[300px]">
-        {data &&
-          data.map((job) => (
-            <Jobs
-              key={job.id}
-              hasApplied={hasApplied}
-              applyToJob={applyToJob}
-              id={job.id}
-              company={job.companyName}
-              title={job.title}
-              salary={job.salary}
-              equity={job.equity}
-            />
-          ))}
-      </div>
+      {!jobs ? (
+        <Loader />
+      ) : (
+        <div className="mt-[350px] flex flex-row flex-wrap justify-center sm:mt-[300px]">
+          {data &&
+            data.map((job) => (
+              <Jobs
+                key={job.id}
+                hasApplied={hasApplied}
+                applyToJob={applyToJob}
+                id={job.id}
+                company={job.companyName}
+                title={job.title}
+                salary={job.salary}
+                equity={job.equity}
+              />
+            ))}
+        </div>
+      )}
     </div>
   );
 };

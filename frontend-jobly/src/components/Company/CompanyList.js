@@ -9,6 +9,7 @@ import {
 } from "../../hooks/useCompanies";
 import { INITIAL_STATE, formInputs } from "./CompanyFormData";
 import BgImage from "../BgImage";
+import Loader from "../Loader";
 
 const CompanyList = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -39,20 +40,24 @@ const CompanyList = () => {
           </div>
         </div>
       </div>
-      <div className="mt-40 flex flex-row flex-wrap justify-center">
-        {data &&
-          data.map((c) => (
-            <div key={`${c.handle}-link`}>
-              <NavLink to={`${c.handle}`}>
-                <CompanyCard
-                  description={c.description}
-                  name={c.name}
-                  numEmployees={c.numEmployees}
-                />
-              </NavLink>
-            </div>
-          ))}
-      </div>
+      {!data ? (
+        <Loader />
+      ) : (
+        <div className="mt-40 flex flex-row flex-wrap justify-center">
+          {data &&
+            data.map((c) => (
+              <div key={`${c.handle}-link`}>
+                <NavLink to={`${c.handle}`}>
+                  <CompanyCard
+                    description={c.description}
+                    name={c.name}
+                    numEmployees={c.numEmployees}
+                  />
+                </NavLink>
+              </div>
+            ))}
+        </div>
+      )}
     </div>
   );
 };

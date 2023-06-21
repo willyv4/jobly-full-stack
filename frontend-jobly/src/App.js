@@ -9,7 +9,6 @@ import SignupForm from "./components/Authentication/SignupForm";
 import LoginForm from "./components/Authentication/LoginForm";
 import { useGetCurrUser } from "./hooks/useAuth/useGetUser";
 import useLocalStorage from "./hooks/useAuth/useLocalStorage";
-import LogOut from "./components/Authentication/LogOut";
 import UserProf from "./components/Profile/UserProf";
 import PrivateRoute from "./components/Authentication/PrivateRoute";
 import { useJobApplication } from "./hooks/useApply";
@@ -20,27 +19,26 @@ function App() {
   // authorized {token: token, username: username}
   const [authorized, setAuthorized] = useLocalStorage(undefined);
   const [applyToJob, hasApplied, setHasApplied] = useJobApplication(authorized);
-  const [currUser, setCurrUser, isLoading] = useGetCurrUser(
+  const [currUser, setCurrUser, isLoading, setDataLoaded] = useGetCurrUser(
     authorized,
     setHasApplied
   );
 
-  const isAuthed = authorized.token !== null;
+  if (!currUser && isLoading) {
+    return <Loader />;
+  }
 
+  const isAuthed = authorized.token !== null;
   const appContext = {
     authed: isAuthed,
     username: authorized.username,
     userInfo: currUser,
   };
 
-  if (!currUser && isLoading) {
-    return <Loader />;
-  }
-
   return (
     <CurrUserContext.Provider value={appContext}>
       <BrowserRouter>
-        <NavBar />
+        <NavBar setCurrUser={setCurrUser} setAuthorized={setAuthorized} />
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -51,6 +49,7 @@ function App() {
                 element={
                   currUser && (
                     <CompanyDetails
+                      setDataLoaded={setDataLoaded}
                       applyToJob={applyToJob}
                       hasApplied={hasApplied}
                     />
@@ -75,15 +74,6 @@ function App() {
             <Route
               path="/login"
               element={<LoginForm setAuthorized={setAuthorized} />}
-            />
-            <Route
-              path="/logout"
-              element={
-                <LogOut
-                  setAuthorized={setAuthorized}
-                  setCurrUser={setCurrUser}
-                />
-              }
             />
             <Route path="*" element={<Navigate to="/404" replace />} />
             <Route path="/404" element={<NotFound />} />

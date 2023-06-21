@@ -3,6 +3,7 @@ import { useLogin, useLoginForm } from "../../hooks/useAuth/useLogin";
 import { LoginInputs } from "../Authentication/AuthFormData";
 import BgImage from "../BgImage";
 import Message from "./ErrorMessage";
+import Processer from "../Processer";
 
 const LoginForm = ({ setAuthorized }) => {
   const [calledLogin, setCalledLogin] = useState(false);
@@ -19,6 +20,7 @@ const LoginForm = ({ setAuthorized }) => {
   return (
     <div className="flex h-screen items-center justify-center">
       <BgImage />
+
       <Message message={message} />
       <div className="rounded-md bg-neutral-50  p-4 shadow-lg">
         <form onSubmit={handleLoginSubmit}>
@@ -38,7 +40,7 @@ const LoginForm = ({ setAuthorized }) => {
               type="submit"
               className="mt-auto rounded-full bg-teal-200 px-4 py-2 text-xs font-bold text-neutral-950 hover:bg-teal-300 "
             >
-              Login
+              {calledLogin ? <Processer load={calledLogin} /> : "Login"}
             </button>
           </div>
         </form>
