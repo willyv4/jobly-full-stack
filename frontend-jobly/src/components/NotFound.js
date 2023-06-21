@@ -1,12 +1,8 @@
-import notFound from "../assets/notFound.gif";
-
 const NotFound = () => {
   <>
-    <img
-      src={notFound}
-      alt="Gif"
-      className="fixed top-10 -z-40 h-screen w-screen object-cover"
-    />
+    <div className="justfiy-center mt-40 flex">
+      <p className="text-4xl font-bold text-teal-300">404 PAGE NOT FOUND</p>
+    </div>
     <div className="fixed top-10  -z-30 h-screen w-screen bg-black/70 backdrop-blur-sm backdrop-filter"></div>
   </>;
 };

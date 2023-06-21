@@ -3,7 +3,6 @@ import Jobs from "./Jobs";
 import { FilterForm } from "../FilterForm";
 import { useState } from "react";
 import { useJobsFiltering, useFilterForm } from "../../hooks/useJobs";
-import officeImage from "../../assets/office.png";
 import { INITIAL_STATE, formInputs } from "./JobsFormData";
 import BgImage from "../BgImage";
 

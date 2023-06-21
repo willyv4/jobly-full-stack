@@ -1,6 +1,5 @@
-import { div } from "react-router-dom";
 import BgImage from "./BgImage";
-import NavBar from "./NavBar";
+
 const Loader = () => {
   return (
     <>
@@ -8,7 +7,7 @@ const Loader = () => {
       <div className="fixed top-0 z-10 flex w-full flex-wrap items-center justify-between bg-neutral-900 p-4 shadow-lg">
         <div
           to="/"
-          className="-mb-4 -ml-4 -mt-5 bg-red-400 p-5 text-3xl font-bold text-neutral-800 hover:bg-red-300"
+          className="-mb-4 -ml-4 -mt-5 bg-teal-400 p-5 text-3xl font-bold text-neutral-800 hover:bg-teal-300"
         >
           Jobly
         </div>

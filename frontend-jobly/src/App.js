@@ -49,10 +49,12 @@ function App() {
               <Route
                 path="/companies/:handle"
                 element={
-                  <CompanyDetails
-                    applyToJob={applyToJob}
-                    hasApplied={hasApplied}
-                  />
+                  currUser && (
+                    <CompanyDetails
+                      applyToJob={applyToJob}
+                      hasApplied={hasApplied}
+                    />
+                  )
                 }
               />
               <Route
