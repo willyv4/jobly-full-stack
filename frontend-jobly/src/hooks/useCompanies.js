@@ -36,22 +36,25 @@ export const useCompanyFiltering = (formProps, submitted, setSubmitted) => {
   return filter;
 };
 
-export const useCompanyFetching = (handle, submitted, setSubmitted) => {
+export const useCompanyFetching = (handle, setDataLoaded) => {
   const [company, setCompany] = useState(null);
 
   useEffect(() => {
     const fetchCompany = async () => {
       try {
         const companyData = await JoblyApi.getCompany(handle);
+        console.log(companyData);
         setCompany(companyData);
+        setDataLoaded(true);
       } catch (e) {
         console.log(e);
         setCompany(true);
+        setDataLoaded(true);
       }
     };
 
     if (handle) fetchCompany();
-  }, [handle, submitted, setSubmitted]);
+  }, [handle, setDataLoaded]);
 
   return company;
 };

@@ -12,11 +12,10 @@ const CompanyDetails = ({ applyToJob, hasApplied, setDataLoaded }) => {
   // if company data else false --- while loading null
   const company = useCompanyFetching(handle, setDataLoaded);
 
+
   useEffect(() => {
-    // ensure
-    if (company) setDataLoaded(true);
     if (company === false) return navigate("/companies");
-  }, [company, navigate, setDataLoaded]);
+  }, [company, navigate]);
 
   return (
     <div className="mt-20">
