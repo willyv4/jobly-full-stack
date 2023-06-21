@@ -8,10 +8,7 @@ export const useProfUpdate = (profData, submitted, setSubmitted, CURR_USER) => {
 
   const getUpdates = async () => {
     try {
-      const userUpdates = await JoblyApi.updateUser(
-        profData,
-        CURR_USER.username
-      );
+      JoblyApi.updateUser(profData, CURR_USER.username);
       setUserUpdates(userUpdates);
       setMessage("Update succesful");
       setSubmitted(false);

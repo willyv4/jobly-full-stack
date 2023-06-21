@@ -23,7 +23,7 @@ export const useGetCurrUser = (authorized, setHasApplied) => {
     }
 
     if (token) getUser();
-  }, [token, isLoading]);
+  }, [token, isLoading, setHasApplied, username]);
 
   return [currUser, setCurrUser, isLoading];
 };
