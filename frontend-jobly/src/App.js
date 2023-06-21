@@ -1,5 +1,5 @@
 import CurrUserContext from "./components/Authentication/CurrUserContext";
-import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import CompanyList from "./components/Company/CompanyList";
@@ -13,7 +13,7 @@ import UserProf from "./components/Profile/UserProf";
 import PrivateRoute from "./components/Authentication/PrivateRoute";
 import { useJobApplication } from "./hooks/useApply";
 import Loader from "./components/Loader";
-import NotFound from "./components/NotFound";
+// import NotFound from "./components/NotFound";
 
 function App() {
   // authorized {token: token, username: username}
