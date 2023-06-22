@@ -73,7 +73,7 @@ function NavBar({ setCurrUser, setAuthorized }) {
 			sm:px-4 sm:text-sm"
           >
             logout
-            <small className="absolute right-2 top-2 rounded-full bg-teal-500 px-2 text-[8px] text-black">
+            <small className="absolute right-2 top-2 rounded-full bg-teal-500 p-1 text-[8px] sm:px-2 sm:py-0">
               {appContext.username}
             </small>
           </button>

@@ -13,7 +13,7 @@ const Message = ({ message }) => {
   if (isShowing) {
     setTimeout(() => {
       setIsShowing(false);
-    }, 5000);
+    }, 2500);
   }
 
   return (
@@ -28,9 +28,11 @@ const Message = ({ message }) => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <p className="absolute left-2 top-20 z-30 rounded-sm bg-white px-6 py-2 text-2xl font-bold text-yellow-400">
-          {message}
-        </p>
+        <div className=" fixed z-10 flex items-center justify-center rounded bg-black/70">
+          <p className="px-6 py-2 text-center text-2xl font-bold text-teal-400">
+            {message}
+          </p>
+        </div>
       </Transition>
     </>
   );
