@@ -47,13 +47,11 @@ function App() {
               <Route
                 path="/companies/:handle"
                 element={
-                  currUser && (
-                    <CompanyDetails
-                      setDataLoaded={setDataLoaded}
-                      applyToJob={applyToJob}
-                      hasApplied={hasApplied}
-                    />
-                  )
+                  <CompanyDetails
+                    setDataLoaded={setDataLoaded}
+                    applyToJob={applyToJob}
+                    hasApplied={hasApplied}
+                  />
                 }
               />
               <Route
