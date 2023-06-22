@@ -1,10 +1,22 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import CurrUserContext from "./Authentication/CurrUserContext";
 import BgImage from "./BgImage";
+import { useGuestLogin } from "../hooks/useAuth/useLogin";
+import { useLogin } from "../hooks/useAuth/useLogin";
 
-const Home = () => {
+const Home = ({ setAuthorized }) => {
   const appContext = useContext(CurrUserContext);
+  const [calledLogin, setCalledLogin] = useState(false);
+  const [loginData, setLoginData, handleLoginSubmit] =
+    useGuestLogin(setCalledLogin);
+  const [message] = useLogin(
+    loginData,
+    setLoginData,
+    setAuthorized,
+    calledLogin,
+    setCalledLogin
+  );
 
   return (
     <div className="flex h-screen items-center justify-center">
@@ -18,22 +30,32 @@ const Home = () => {
         </p>
 
         {!appContext.authed ? (
-          <>
-            <NavLink
-              to="/login"
-              type="submit"
-              className="text-neutrall-900 mr-4 rounded-full bg-neutral-50 px-4 py-2 text-xl font-bold hover:bg-neutral-300 "
-            >
-              Login
-            </NavLink>
-            <NavLink
-              to="/signup"
-              type="submit"
-              className="rounded-full bg-neutral-50 px-4 py-2 text-xl font-bold text-neutral-900 hover:bg-neutral-300"
-            >
-              Create Account
-            </NavLink>
-          </>
+          <div className="flex flex-col">
+            <div className="mb-4 flex">
+              <NavLink
+                to="/login"
+                type="submit"
+                className="text-neutrall-900 mr-4 rounded-full bg-neutral-50 px-4 py-2 text-xl font-bold hover:bg-neutral-300 "
+              >
+                Login
+              </NavLink>
+              <NavLink
+                to="/signup"
+                type="submit"
+                className="rounded-full bg-neutral-50 px-4 py-2 text-xl font-bold text-neutral-900 hover:bg-neutral-300"
+              >
+                Create Account
+              </NavLink>
+            </div>
+            <form onSubmit={handleLoginSubmit} className="ml-2">
+              <button
+                type="submit"
+                className="text-lg font-bold text-teal-300 underline hover:animate-pulse"
+              >
+                {calledLogin ? "one moment please..." : "or continue as guest"}
+              </button>
+            </form>
+          </div>
         ) : (
           <div className="w-fit rounded-full bg-teal-200 px-4 py-2 text-xl font-bold text-neutral-900">
             Welcome, {appContext.username}

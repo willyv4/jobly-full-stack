@@ -41,7 +41,7 @@ function App() {
         <NavBar setCurrUser={setCurrUser} setAuthorized={setAuthorized} />
         <main>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home setAuthorized={setAuthorized} />} />
             <Route element={<PrivateRoute />}>
               <Route path="/companies" element={<CompanyList />} />
               <Route

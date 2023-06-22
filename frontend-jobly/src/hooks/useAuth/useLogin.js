@@ -51,6 +51,22 @@ export const useLoginForm = (setCalledLogin) => {
     e.preventDefault();
     setCalledLogin(true);
   };
+  console.log(loginData);
 
   return [loginData, setLoginData, handleLoginChange, handleLoginSubmit];
+};
+
+export const useGuestLogin = (setCalledLogin) => {
+  const [loginData, setLoginData] = useState({
+    username: "guest",
+    password: "guest",
+  });
+
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    setCalledLogin(true);
+  };
+  console.log(loginData);
+
+  return [loginData, setLoginData, handleLoginSubmit];
 };
