@@ -10,13 +10,7 @@ const Home = ({ setAuthorized }) => {
   const [calledLogin, setCalledLogin] = useState(false);
   const [loginData, setLoginData, handleLoginSubmit] =
     useGuestLogin(setCalledLogin);
-  const [message] = useLogin(
-    loginData,
-    setLoginData,
-    setAuthorized,
-    calledLogin,
-    setCalledLogin
-  );
+  useLogin(loginData, setLoginData, setAuthorized, calledLogin, setCalledLogin);
 
   return (
     <div className="flex h-screen items-center justify-center">

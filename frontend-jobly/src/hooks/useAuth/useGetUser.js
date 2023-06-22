@@ -14,13 +14,13 @@ export const useGetCurrUser = (authorized, setHasApplied) => {
       setIsLoading(true);
       try {
         const user = await JoblyApi.getUserInfo(username);
-        console.log(user);
+        // console.log(user);
         setCurrUser(user);
         setHasApplied(new Set(user.applications));
         setIsLoading(false);
         setDataLoaded(true);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setIsLoading(false);
         setDataLoaded(true);
       }

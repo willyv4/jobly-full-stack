@@ -43,11 +43,11 @@ export const useCompanyFetching = (handle, setDataLoaded) => {
     const fetchCompany = async () => {
       try {
         const companyData = await JoblyApi.getCompany(handle);
-        console.log(companyData);
+        // console.log(companyData);
         setCompany(companyData);
         setDataLoaded(true);
       } catch (e) {
-        console.log(e);
+        // console.log(e);
         setCompany(true);
         setDataLoaded(true);
       }

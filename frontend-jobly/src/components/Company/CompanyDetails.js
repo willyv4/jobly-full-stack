@@ -12,7 +12,6 @@ const CompanyDetails = ({ applyToJob, hasApplied, setDataLoaded }) => {
   // if company data else false --- while loading null
   const company = useCompanyFetching(handle, setDataLoaded);
 
-
   useEffect(() => {
     if (company === false) return navigate("/companies");
   }, [company, navigate]);
@@ -31,7 +30,7 @@ const CompanyDetails = ({ applyToJob, hasApplied, setDataLoaded }) => {
           </p>
         </div>
       </div>
-      {!company ? (
+      {company === null ? (
         <Loader />
       ) : (
         <div className="mt-[350px] flex flex-row flex-wrap justify-center sm:mt-[300px]">

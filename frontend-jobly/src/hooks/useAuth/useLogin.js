@@ -21,7 +21,7 @@ export const useLogin = (
       setLData(LOGIN_STATE);
       navigate("/");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setMessage(error[0]);
       setCalledLogin(false);
       setLData(LOGIN_STATE);
@@ -51,7 +51,6 @@ export const useLoginForm = (setCalledLogin) => {
     e.preventDefault();
     setCalledLogin(true);
   };
-  console.log(loginData);
 
   return [loginData, setLoginData, handleLoginChange, handleLoginSubmit];
 };
@@ -66,7 +65,6 @@ export const useGuestLogin = (setCalledLogin) => {
     e.preventDefault();
     setCalledLogin(true);
   };
-  console.log(loginData);
 
   return [loginData, setLoginData, handleLoginSubmit];
 };
