@@ -1,18 +1,18 @@
 import { useProfUpdate, useProfileForm } from "../../hooks/useProfile";
 import { ProfFormInputs } from "./FormData";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import BgImage from "../BgImage";
 import Message from "../Authentication/ErrorMessage";
+import CurrUserContext from "../Authentication/CurrUserContext";
 
-const UserProf = ({ currUser }) => {
+const UserProf = () => {
+  const { userInfo } = useContext(CurrUserContext);
   const [submitted, setSubmitted] = useState(false);
-
   const [profData, handleProfileChange, handleProfileSubmit] = useProfileForm(
-    currUser,
+    userInfo,
     setSubmitted
   );
-
-  const [message] = useProfUpdate(profData, submitted, setSubmitted, currUser);
+  const [message] = useProfUpdate(profData, submitted, setSubmitted, userInfo);
 
   return (
     <div className="flex h-screen items-center justify-center">

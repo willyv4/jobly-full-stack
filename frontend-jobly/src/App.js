@@ -24,9 +24,7 @@ function App() {
     setHasApplied
   );
 
-  if (!currUser && isLoading) {
-    return <Loader />;
-  }
+  if (!currUser && isLoading) return <Loader />;
 
   const isAuthed = authorized.token !== null;
   const appContext = {
@@ -60,10 +58,7 @@ function App() {
                   <JobsList applyToJob={applyToJob} hasApplied={hasApplied} />
                 }
               />
-              <Route
-                path="/profile"
-                element={<UserProf currUser={currUser} />}
-              />
+              <Route path="/profile" element={<UserProf />} />
             </Route>
             <Route
               path="/signup"

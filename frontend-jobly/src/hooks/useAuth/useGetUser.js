@@ -9,18 +9,17 @@ export const useGetCurrUser = (authorized, setHasApplied) => {
   const username = authorized.username;
   const token = authorized.token;
 
+  // 
   useEffect(() => {
     async function getUser() {
       setIsLoading(true);
       try {
         const user = await JoblyApi.getUserInfo(username);
-        // console.log(user);
         setCurrUser(user);
         setHasApplied(new Set(user.applications));
         setIsLoading(false);
         setDataLoaded(true);
       } catch (err) {
-        // console.log(err);
         setIsLoading(false);
         setDataLoaded(true);
       }

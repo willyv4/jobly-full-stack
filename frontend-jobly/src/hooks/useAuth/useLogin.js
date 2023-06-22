@@ -13,25 +13,25 @@ export const useLogin = (
   const navigate = useNavigate();
   const [message, setMessage] = useState();
 
-  async function login() {
-    try {
-      const token = await JoblyApi.login(lData);
-      setAuthorized({ token: token, username: lData.username });
-      setCalledLogin(false);
-      setLData(LOGIN_STATE);
-      navigate("/");
-    } catch (error) {
-      // console.log(error);
-      setMessage(error[0]);
-      setCalledLogin(false);
-      setLData(LOGIN_STATE);
-    }
-  }
-
   //keep from submitting req twice
   useEffect(() => {
+    async function login() {
+      try {
+        const token = await JoblyApi.login(lData);
+        setAuthorized({ token: token, username: lData.username });
+        setCalledLogin(false);
+        setLData(LOGIN_STATE);
+        navigate("/");
+      } catch (error) {
+        // console.log(error);
+        setMessage(error[0]);
+        setCalledLogin(false);
+        setLData(LOGIN_STATE);
+      }
+    }
+
     if (calledLogin) login();
-  });
+  }, [calledLogin, lData, navigate, setAuthorized, setCalledLogin, setLData]);
 
   return [message];
 };

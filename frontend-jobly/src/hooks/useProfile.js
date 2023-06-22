@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import JoblyApi from "../API/api";
+import { INITIAL_STATE } from "../components/Company/CompanyFormData";
+import Loader from "../components/Loader";
 
 // UPDATE PROFILE API CALL
 export const useProfUpdate = (profData, submitted, setSubmitted, CURR_USER) => {
@@ -24,24 +26,22 @@ export const useProfUpdate = (profData, submitted, setSubmitted, CURR_USER) => {
 };
 
 // UPDATE PROFILE FORM
-export const useProfileForm = (CURR_USER, setSubmitted) => {
-  const initialState = {
+export const useProfileForm = (userInfo, setSubmitted) => {
+  const [profData, setProfData] = useState({
     firstName: "",
     lastName: "",
     email: "",
-  };
-
-  const [profData, setProfData] = useState(initialState);
+  });
 
   useEffect(() => {
-    if (CURR_USER) {
+    if (userInfo) {
       setProfData({
-        firstName: CURR_USER.firstName || "",
-        lastName: CURR_USER.lastName || "",
-        email: CURR_USER.email || "",
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+        email: userInfo.email,
       });
     }
-  }, [CURR_USER]);
+  }, [userInfo, profData]);
 
   const handleProfileChange = (e) => {
     const { name, value } = e.target;
