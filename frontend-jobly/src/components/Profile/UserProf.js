@@ -4,6 +4,7 @@ import { useState, useContext } from "react";
 import BgImage from "../BgImage";
 import Message from "../Authentication/ErrorMessage";
 import CurrUserContext from "../Authentication/CurrUserContext";
+import Loader from "../Loader";
 
 const UserProf = () => {
   const { userInfo } = useContext(CurrUserContext);
@@ -23,24 +24,28 @@ const UserProf = () => {
           <p className="text-center text-lg font-bold">
             Update Your information
           </p>
-          <div className="flex w-80 flex-col space-y-4 p-4">
-            {ProfFormInputs.map((input) => (
-              <input
-                key={input.id}
-                className="rounded-full p-2 text-sm shadow-inner focus:outline-teal-300"
-                type={input.type}
-                name={input.name}
-                value={profData[input.name]}
-                onChange={handleProfileChange}
-              />
-            ))}
-            <button
-              type="submit"
-              className=" mt-auto rounded-full bg-teal-200 px-4 py-2 text-xs font-bold text-black hover:animate-pulse"
-            >
-              Save Changes
-            </button>
-          </div>
+          {profData.firstName === "" ? (
+            <Loader />
+          ) : (
+            <div className="flex w-80 flex-col space-y-4 p-4">
+              {ProfFormInputs.map((input) => (
+                <input
+                  key={input.id}
+                  className="rounded-full p-2 text-sm shadow-inner focus:outline-teal-300"
+                  type={input.type}
+                  name={input.name}
+                  value={profData[input.name]}
+                  onChange={handleProfileChange}
+                />
+              ))}
+              <button
+                type="submit"
+                className=" mt-auto rounded-full bg-teal-200 px-4 py-2 text-xs font-bold text-black hover:animate-pulse"
+              >
+                Save Changes
+              </button>
+            </div>
+          )}
         </form>
       </div>
     </div>

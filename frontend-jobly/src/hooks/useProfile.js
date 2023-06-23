@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import JoblyApi from "../API/api";
-import { INITIAL_STATE } from "../components/Company/CompanyFormData";
-import Loader from "../components/Loader";
 
 // UPDATE PROFILE API CALL
 export const useProfUpdate = (profData, submitted, setSubmitted, CURR_USER) => {
@@ -34,7 +32,7 @@ export const useProfileForm = (userInfo, setSubmitted) => {
   });
 
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo && profData.firstName === "") {
       setProfData({
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,

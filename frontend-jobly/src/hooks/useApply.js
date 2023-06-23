@@ -10,7 +10,6 @@ export const useJobApplication = (authorized) => {
   }
 
   function applyToJob(id) {
-    // console.log(id);
     if (hasAppliedToJob(id)) return;
     JoblyApi.applyToJob(authorized.username, id);
     setHasApplied(new Set([...hasApplied, id]));

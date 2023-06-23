@@ -23,7 +23,6 @@ export const useLogin = (
         setLData(LOGIN_STATE);
         navigate("/");
       } catch (error) {
-        // console.log(error);
         setMessage(error[0]);
         setCalledLogin(false);
         setLData(LOGIN_STATE);

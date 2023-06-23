@@ -5,12 +5,12 @@ import BgImage from "../BgImage";
 import { useEffect } from "react";
 import Loader from "../Loader";
 
-const CompanyDetails = ({ applyToJob, hasApplied, setDataLoaded }) => {
+const CompanyDetails = ({ applyToJob, hasApplied }) => {
   const { handle } = useParams();
   const navigate = useNavigate();
 
   // if company data else false --- while loading null
-  const company = useCompanyFetching(handle, setDataLoaded);
+  const company = useCompanyFetching(handle);
 
   useEffect(() => {
     if (company === false) return navigate("/companies");

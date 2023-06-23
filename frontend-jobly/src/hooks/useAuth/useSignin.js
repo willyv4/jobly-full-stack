@@ -24,7 +24,6 @@ export const useSignup = (
       setSData(REGISTER_STATE);
       navigate("/");
     } catch (error) {
-      // console.log(error);
       setMessage(error[0]);
       setCalledSignup(false);
       setSData(REGISTER_STATE);

@@ -19,7 +19,7 @@ function App() {
   // authorized {token: token, username: username}
   const [authorized, setAuthorized] = useLocalStorage(undefined);
   const [applyToJob, hasApplied, setHasApplied] = useJobApplication(authorized);
-  const [currUser, setCurrUser, isLoading, setDataLoaded] = useGetCurrUser(
+  const [currUser, setCurrUser, isLoading] = useGetCurrUser(
     authorized,
     setHasApplied
   );
@@ -46,7 +46,7 @@ function App() {
                 path="/companies/:handle"
                 element={
                   <CompanyDetails
-                    setDataLoaded={setDataLoaded}
+                    // setDataLoaded={setDataLoaded}
                     applyToJob={applyToJob}
                     hasApplied={hasApplied}
                   />
