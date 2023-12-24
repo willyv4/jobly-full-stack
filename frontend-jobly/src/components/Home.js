@@ -7,6 +7,7 @@ import { useLogin } from "../hooks/useAuth/useLogin";
 
 const Home = ({ setAuthorized }) => {
   const appContext = useContext(CurrUserContext);
+  const [hidden, setHidden] = useState(false);
   const [calledLogin, setCalledLogin] = useState(false);
   const [loginData, setLoginData, handleLoginSubmit] =
     useGuestLogin(setCalledLogin);
@@ -42,12 +43,31 @@ const Home = ({ setAuthorized }) => {
               </NavLink>
             </div>
             <form onSubmit={handleLoginSubmit} className="ml-2">
-              <button
-                type="submit"
-                className="text-lg font-bold text-teal-300 underline hover:animate-pulse"
-              >
-                {calledLogin ? "one moment please..." : "or continue as guest"}
-              </button>
+              <div className="z-10 -ml-1 -mt-2 flex flex-col">
+                <button
+                  onMouseEnter={() => setHidden(true)}
+                  onMouseLeave={() => setHidden(false)}
+                  type="submit"
+                  className="-ml-[37.5rem] text-lg font-bold text-teal-300 underline hover:animate-pulse"
+                >
+                  {calledLogin
+                    ? "one moment please..."
+                    : "or continue as guest"}
+                </button>
+                <small
+                  className={`${`-ml-2 w-fit rounded-full bg-neutral-100 p-2 font-bold shadow-2xl`}
+                    ${
+                      hidden
+                        ? `opacity-100 transition delay-700 ease-in`
+                        : `opacity-0 transition delay-300 ease-out`
+                    }
+                        
+                  `}
+                >
+                  Guest's have full access to Jobly to showcase site
+                  functionality
+                </small>
+              </div>
             </form>
           </div>
         ) : (
